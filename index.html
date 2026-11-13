@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Roboto+Condensed:wght@700&display=swap');
+  body {
+    margin: 0;
+    background: #0d0d0d;
+    color: #ffffff;
+    font-family: 'Roboto Condensed', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .hud-box {
+    background: #000000;
+    border: 3px solid #e60012;
+    padding: 20px 30px;
+    transform: skew(-4deg);
+    box-shadow: 8px 8px 0px #e60012;
+    text-align: center;
+    width: 280px;
+  }
+  .header {
+    background: #e60012;
+    color: #000;
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  #timer {
+    font-family: 'Anton', sans-serif;
+    font-size: 64px;
+    letter-spacing: 3px;
+    line-height: 1;
+    margin: 10px 0;
+    text-shadow: 3px 3px 0px #e60012;
+  }
+  .controls button {
+    background: #ffffff;
+    color: #000000;
+    border: none;
+    font-family: 'Anton', sans-serif;
+    font-size: 16px;
+    padding: 6px 16px;
+    margin: 5px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: 0.15s;
+  }
+  .controls button:hover {
+    background: #e60012;
+    color: #ffffff;
+    transform: scale(1.05);
+  }
+</style>
+</head>
+<body>
+  <div class="hud-box">
+    <div class="header" id="mode">INFILTRATION // FOCUS</div>
+    <div id="timer">25:00</div>
+    <div class="controls">
+      <button onclick="startTimer()">START</button>
+      <button onclick="pauseTimer()">PAUSE</button>
+      <button onclick="resetTimer()">RESET</button>
+    </div>
+  </div>
+
+  <script>
+    let time = 25 * 60;
+    let interval = null;
+
+    function updateDisplay() {
+      const mins = Math.floor(time / 60).toString().padStart(2, '0');
+      const secs = (time % 60).toString().padStart(2, '0');
+      document.getElementById('timer').textContent = `${mins}:${secs}`;
+    }
+
+    function startTimer() {
+      if (interval) return;
+      interval = setInterval(() => {
+        if (time > 0) {
+          time--;
+          updateDisplay();
+        } else {
+          clearInterval(interval);
+          interval = null;
+          document.getElementById('mode').textContent = "TIME'S UP // TAKE BREATHER";
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(interval);
+      interval = null;
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      time = 25 * 60;
+      document.getElementById('mode').textContent = "INFILTRATION // FOCUS";
+      updateDisplay();
+    }
+  </script>
+</body>
+</html>
